@@ -1,4 +1,3 @@
-markdown
 # Django Blog Application
 
 A full-featured, production-ready blog application built with Django featuring user authentication, CRUD operations, and a modern responsive design.
