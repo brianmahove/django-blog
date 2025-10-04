@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>My Posts</h1>
+            <a href="{% url 'create_post' %}" class="btn btn-primary">Create New Post</a>
+        </div>
+
+        {% if posts %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th>Publish Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                    <tr>
+                        <td>
+                            <strong>{{ post.title }}</strong>
+                            {% if post.featured_image %}
+                            <span class="badge bg-info ms-2">Has Image</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge {% if post.status == 'published' %}bg-success{% else %}bg-warning{% endif %}">
+                                {{ post.status|title }}
+                            </span>
+                        </td>
+                        <td>{{ post.created_date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if post.publish_date %}
+                                {{ post.publish_date|date:"M d, Y" }}
+                            {% else %}
+                                <span class="text-muted">Not published</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary">View</a>
+                                <a href="#" class="btn btn-outline-secondary">Edit</a>
+                                <a href="#" class="btn btn-outline-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <h4>No posts yet!</h4>
+            <p>You haven't created any posts. Start by creating your first blog post.</p>
+            <a href="{% url 'create_post' %}" class="btn btn-primary">Create Your First Post</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

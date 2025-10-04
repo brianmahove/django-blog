@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <div class="card">
+        {% if post.featured_image %}
+        <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
+        {% endif %}
+        <div class="card-body">
+            <h1 class="card-title">{{ post.title }}</h1>
+            <div class="text-muted mb-3">
+                By {{ post.author.username }} | {{ post.publish_date|date:"F d, Y" }} |
+                Categories: 
+                {% for category in post.categories.all %}
+                <span class="badge bg-secondary">{{ category.name }}</span>
+                {% endfor %}
+            </div>
+            <div class="card-text">
+                {{ post.content|linebreaks }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="mt-5">
+        <h3>Comments ({{ comments.count }})</h3>
+        
+        {% if user.is_authenticated %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Add a Comment</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info mt-3">
+            Please <a href="{% url 'login' %}">login</a> to post a comment.
+        </div>
+        {% endif %}
+
+        {% for comment in comments %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ comment.author.username }}</strong>
+                    <small class="text-muted">{{ comment.created_date|date:"M d, Y H:i" }}</small>
+                </div>
+                <p class="mt-2">{{ comment.content|linebreaks }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info mt-3">
+            No comments yet. Be the first to comment!
+        </div>
+        {% endfor %}
+    </div>
+</article>
+{% endblock %}
