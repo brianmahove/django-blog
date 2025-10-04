@@ -55,7 +55,7 @@ A full-featured, production-ready blog application built with Django featuring u
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/django-blog.git
+   git clone https://github.com/brianmahove/django-blog.git
    cd django-blog
 Set up virtual environment
 
